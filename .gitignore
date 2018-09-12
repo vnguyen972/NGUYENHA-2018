@@ -5,3 +5,11 @@ known_devices.yaml
 tts/
 *.sh
 deps/
+.HA_VERSION
+.cloud/production_auth.json
+.storage/auth
+.storage/auth_provider.homeassistant
+.storage/core.config_entries
+.storage/core.entity_registry
+.storage/onboarding
+.uuid
