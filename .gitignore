@@ -1,0 +1,7 @@
+*.db
+secrets.yaml
+known_devices.yaml
+*.conf
+tts/
+*.sh
+deps/
