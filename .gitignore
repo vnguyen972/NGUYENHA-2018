@@ -13,3 +13,5 @@ deps/
 .storage/core.entity_registry
 .storage/onboarding
 .uuid
+home-assistant_v2.db-shm
+home-assistant_v2.db-wal
