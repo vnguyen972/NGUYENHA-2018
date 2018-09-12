@@ -1,0 +1,43 @@
+#######################################
+# ZONES
+#######################################
+- name: Wylie-High
+  latitude: !secret wyliehigh_latitude
+  longitude: !secret wyliehigh_longitude
+  radius: 800
+- name: Home
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  radius: 100
+- name: XO
+  latitude: !secret xo_latitude
+  longitude: !secret xo_longitude
+  radius: 250
+- name: SV-E
+  latitude: !secret sve_latitude
+  longitude: !secret sve_longitude
+  radius: 300
+- name: Whitt
+  latitude: !secret whitt_latitude
+  longitude: !secret whitt_longitude
+  radius: 250
+- name: Cooper
+  latitude: !secret cooper_latitude
+  longitude: !secret cooper_longitude
+  radius: 550
+- name: Ba-Noi
+  latitude: !secret banoi_latitude
+  longitude: !secret banoi_longitude
+  radius: 100
+- name: Oanh
+  latitude: !secret oanh_latitude
+  longitude: !secret oanh_longitude
+  radius: 100
+- name: Tham
+  latitude: !secret tham_latitude
+  longitude: !secret tham_longitude
+  radius: 100
+- name: Chua
+  latitude: !secret chua_latitude
+  longitude: !secret chua_longitude
+  radius: 150

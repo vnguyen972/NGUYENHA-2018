@@ -1,0 +1,22 @@
+movie_time:
+  alias: Movie Time
+  sequence:
+    - alias: Start Theater
+      service: remote.turn_on
+      data:
+        entity_id: remote.theater_room
+    - alias: Turn off Light
+      service: light.turn_off
+      data:
+        entity_id: light.mqtt_theater_room_light      
+movie_done:
+  alias: Done Watching Movie
+  sequence:
+    - alias: Stop Theater
+      service: remote.turn_off
+      data:
+        entity_id: remote.theater_room
+    - alias: Turn on Light
+      service: light.turn_on
+      data:
+        entity_id: light.mqtt_theater_room_light 

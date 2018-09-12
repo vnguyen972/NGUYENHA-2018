@@ -1,0 +1,137 @@
+#################################################################
+## Sensors
+#################################################################
+  - platform: yr
+  - platform: syncthru
+    resource: http://192.168.1.178
+    name: My Samsung Printer
+  - platform: mqtt
+    name: "Laundry R. Sensor Battery Level"
+    state_topic: "smartthings/Door To Garage/battery"
+    unit_of_measurement: "%"
+  - platform: mqtt
+    name: "Back Door Sensor Battery Level"
+    state_topic: "smartthings/Back Door/battery"
+    unit_of_measurement: "%"
+  - platform: mqtt
+    name: "Front Door Sensor Battery Level"
+    state_topic: "smartthings/Front Door/battery"
+    unit_of_measurement: "%"
+  - platform: mqtt
+    name: "Laundry Room Temp"
+    state_topic: "smartthings/Door To Garage/temperature"
+    unit_of_measurement: "°F"
+  - platform: mqtt
+    name: "Front Room Temp"
+    state_topic: "smartthings/Front Door/temperature"
+    unit_of_measurement: "°F"
+  - platform: mqtt
+    name: "Living Room Temp"
+    state_topic: "smartthings/Back Door/temperature"
+    unit_of_measurement: "°F"
+  - platform: mqtt
+    state_topic: "smartthings/Front Door/contact"
+    name: "Front Door"
+  - platform: mqtt
+    state_topic: "smartthings/Back Door/contact"
+    name: "Back Door"
+  - platform: mqtt
+    state_topic: "smartthings/Door To Garage/contact"
+    name: "Door To Garage"
+  - platform: mqtt
+    name: Vu's Step Counter
+    state_topic: zanzito/vnguyen972/step_counter
+    qos: 0
+  - platform: mqtt
+    name: Vu's Phone Battery"
+    state_topic: zanzito/vnguyen972/battery_level
+    qos: 0
+    unit_of_measurement: "%"
+  - platform: template
+    sensors:
+      theater_room:
+        value_template: '{{ states.remote.theater_room.attributes.current_activity }}'
+        friendly_name: 'Theater Room'
+  - platform: plex
+    host: 192.168.1.101
+  - platform: time_date
+    name: current_date
+    display_options:
+      - 'date'
+  - platform: mqtt
+    name: "Theater Room Motion Sensor"
+    state_topic: "smartthings/Theater Room Motion Sensor/motion"
+    payload_on: "active"
+    payload_off: "inactive"
+  - platform: mqtt
+    name: "HallwayDownStair Motion Sensor"
+    state_topic: "smartthings/HallwayDownStair/motion"
+    payload_on: "active"
+    payload_off: "inactive"
+  - platform: template
+    sensors:
+      # gogogate4dash:
+        # value_template: >-
+            # {%- if is_state('sensor.gogogate2', '0') -%}
+            # CLOSED
+            # {%- elif is_state('sensor.gogogate2', '100') -%}
+            # OPEN
+            # {%- else -%}
+            # CLOSED
+            # {%- endif -%}            
+      trash_day_number:
+        value_template: >
+            {% if is_state("input_select.trash_day","Sun") %}
+            6
+            {% elif is_state("input_select.trash_day","Mon") %}
+            0        
+            {% elif is_state("input_select.trash_day","Tue") %}
+            1
+            {% elif is_state("input_select.trash_day","Wed") %}
+            2
+            {% elif is_state("input_select.trash_day","Thu") %}
+            3
+            {% elif is_state("input_select.trash_day","Fri") %}
+            4
+            {% elif is_state("input_select.trash_day","Sat") %}
+            5
+            {% endif %}
+      until_trash_day:
+        friendly_name: 'Trash Day In'
+        value_template: >
+           {{ (states('sensor.trash_day_number')|int - now().weekday()) % 7 }}
+        unit_of_measurement: 'days'
+        entity_id: 
+          - sensor.date
+          - sensor.trash_day_number
+  - platform: darksky
+    api_key: !secret darksky_api_key
+    monitored_conditions:
+      - summary
+      - icon
+      - nearest_storm_distance
+      - nearest_storm_bearing
+      - precip_type
+      - precip_intensity
+      - precip_probability
+      - temperature
+      - apparent_temperature
+      - dew_point
+      - wind_speed
+      - wind_bearing
+      - cloud_cover
+      - humidity
+      - pressure
+      - visibility
+      - ozone
+      - minutely_summary
+      - hourly_summary
+      - daily_summary
+      - temperature_max
+      - temperature_min
+      - apparent_temperature_max
+      - apparent_temperature_min
+      - precip_intensity_max
+    units: auto
+    update_interval:
+      minutes: 15

@@ -1,0 +1,282 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 118
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: UTC
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+http:
+  # Uncomment this to add a password (recommended!)
+  # api_password: PASSWORD
+  # Uncomment this if you are using SSL or running in Docker etc
+  # base_url: example.duckdns.org:8123
+  base_url: nguyenha.duckdns.org
+  ssl_certificate: /etc/letsencrypt/live/nguyenha.duckdns.org/fullchain.pem
+  ssl_key: /etc/letsencrypt/live/nguyenha.duckdns.org/privkey.pem
+  trusted_networks:
+    - 127.0.0.1
+    - 192.168.1.1
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+sensor: !include sensors.yaml
+
+recorder:
+  purge_keep_days: 5
+  
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+group: !include groups.yaml
+script: !include scripts.yaml
+
+duckdns:
+  domain: nguyenha.duckdns.org
+  access_token: 12a002c8-e5ca-4603-adf5-b7ddd1cbf202
+
+mqtt:
+  broker: localhost
+  port: 1883
+  client_id: home-assistant-1
+  username: mqtt
+  password: !secret mqtt_password
+  protocol: 3.1
+  birth_message:
+    topic: 'hass/status'
+    payload: 'online'
+    qos: 1
+    retain: true
+  will_message:
+    topic: 'hass/status'
+    payload: 'offline'
+    qos: 1
+    retain: true
+
+light:
+  - platform: group
+    name: Living Room Lights
+    entities:
+      - light.mqtt_livingroom_light_1
+      - light.mqtt_livingroom_light_2
+  - platform: mqtt
+    name: "MQTT Theater Room Light"
+    state_topic: "smartthings/Theater Room Dimmer/switch"
+    command_topic: "smartthings/Theater Room Dimmer/switch"
+    brightness_state_topic: "smartthings/Theater Room Dimmer/level"
+    brightness_command_topic: "smartthings/Theater Room Dimmer/level"
+    brightness_scale: 99
+    brightness_template: "{{ value }}"
+    qos: 0
+    payload_on: "on"
+    payload_off: "off"
+    retain: true
+    optimistic: false
+  - platform: mqtt
+    name: "MQTT Dinner Table Light"
+    state_topic: "smartthings/Dinner Table Light/switch"
+    command_topic: "smartthings/Dinner Table Light/switch"
+    brightness_state_topic: "smartthings/Dinner Table Light/level"
+    brightness_command_topic: "smartthings/Dinner Table Light/level"
+    brightness_scale: 99
+    brightness_template: "{{ value }}"
+    qos: 0
+    payload_on: "on"
+    payload_off: "off"
+    retain: true
+    optimistic: false
+  - platform: mqtt
+    name: "MQTT Hallway to Garage Light"
+    state_topic: "smartthings/Hallway To Garage/switch"
+    command_topic: "smartthings/Hallway To Garage/switch"
+    qos: 0
+    payload_on: "on"
+    payload_off: "off"
+    retain: true
+    optimistic: false
+  - platform: mqtt
+    name: "MQTT Livingroom Light 1"
+    state_topic: "smartthings/Living Room Light 1/switch"
+    command_topic: "smartthings/Living Room Light 1/switch"
+    qos: 0
+    payload_on: "on"
+    payload_off: "off"
+    retain: true
+    optimistic: false
+  - platform: mqtt
+    name: "MQTT Livingroom Light 2"
+    state_topic: "smartthings/Living Room Light 2/switch"
+    command_topic: "smartthings/Living Room Light 2/switch"
+    qos: 0
+    payload_on: "on"
+    payload_off: "off"
+    retain: true
+    optimistic: false
+ifttt:
+  key: !secret ifttt_api_key
+notify:
+  - platform: telegram
+    name: Vu_Telegram
+    chat_id: 467266232
+  - platform: html5
+    name: html5
+    gcm_api_key: !secret notify_html5_gcm_api_key
+    gcm_sender_id: !secret notify_html5_gcm_sender_id
+  - platform: joaoapps_join
+    device_id: !secret join_vu_device_id
+    name: GalaxyS7
+    api_key: !secret join_vu_device_api_key
+
+joaoapps_join:
+  - name: GalaxyS7
+    device_id: group.GalaxyS7
+    api_key: !secret join_vu_device_api_key
+device_tracker:
+- platform: nmap_tracker
+  hosts: 
+    - 192.168.1.113
+    - 192.168.1.112
+    - 192.168.1.115
+    - 192.168.1.191
+  home_interval: 1
+  consider_home: 180
+  scan_options: " --privileged -sP "
+- platform: owntracks
+  max_gps_accuracy: 200
+
+zone: !include zones.yaml
+
+input_boolean:
+  nap_time:
+    name: Nap Time
+    initial: off
+  living_room_light_automation:
+    name: Living Room Light Automation
+    initial: off
+  vacation_time_mode:
+    name: Vacation Time Mode
+    initial: off
+input_select:
+  trash_day:
+    options:
+     - Mon
+     - Tue
+     - Wed
+     - Thu
+     - Fri
+     - Sat
+     - Sun
+    initial: Wed
+  # vacation:
+    # options:
+     # - Yes
+     # - No
+    # initial: No      
+  # living_room_light_automation:
+    # options:
+     # - Yes
+     # - No     
+    # initial: No
+scene:
+  - name: theater light normal
+    entities:
+      light.mqtt_theater_room_light:
+        state: on
+        transition: 2
+        brightness: 75
+  - name: theater light dim
+    entities:
+      light.mqtt_theater_room_light:
+        state: on
+        transition: 2
+        brightness: 20
+  - name: theater light off
+    entities:
+      light.mqtt_theater_room_light:
+        state: off
+        transition: 2
+automation: !include automations.yaml
+
+ecobee:
+  api_key: !secret ecobee_api_key    
+binary_sensor:
+  - platform: workday
+    name: Work Days
+    country: US
+    state: TX
+    workdays: [mon, tue, wed, thu, fri]
+  - platform: workday
+    name: Holidays
+    country: US
+    state: TX
+    workdays: [holiday]
+    excludes: []
+  - platform: workday
+    name: Weekends
+    country: US
+    state: TX
+    workdays: [sat, sun]
+    excludes: [mon, tue, wed, thu, fri, holiday]
+switch:
+  - platform: template
+    switches:
+      theater:
+        value_template: "{% if is_state('remote.theater_room', 'on') %}on{% else %}off{% endif %}"
+        turn_on:
+          service: remote.turn_on
+          entity_id: remote.theater_room
+        turn_off:
+          service: remote.turn_off
+          entity_id: remote.theater_room
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_api_key
+    allowed_chat_ids:
+      - 467266232

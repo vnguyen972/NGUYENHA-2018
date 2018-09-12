@@ -1,0 +1,53 @@
+########################################################
+#  AUTOMATION
+########################################################
+- id: Lockitron Notification
+  alias: lockitron_notification
+  trigger:
+    - platform: time
+      minutes: '/5'
+      seconds: 00
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ (as_timestamp(now()) -  as_timestamp(states.sensor.front_door.last_updated)) > 300 }}'
+      - condition: state
+        entity_id: lock.lockitron
+        state: 'unlocked'
+      - condition: state
+        entity_id: sensor.front_door
+        state: 'closed'
+  action:
+    - service: tts.google_say
+      entity_id: media_player.kitchen_home
+      data:
+        message: "Front door is closed over 5 minutes but it's not locked. Please lock it now!"
+- id: Notification_Audio-Duyen_arrived_at_work
+  alias: duyen_arrived_at_work
+  trigger:
+    - platform: state
+      entity_id: device_tracker.duyen972_duyengalaxys7
+      from: 'not_home'
+      to: 'SV-E'
+  condition:
+    - condition: time
+      before: '08:30'
+      after: '08:15'
+  action:
+    - delay: '00:00:30'
+    - service: tts.google_say
+      entity_id: media_player.kitchen_home
+      data:
+        message: "Duyen has arrived at work."
+        cache: false
+- id: web_notify_when_garage_status_changed
+  alias: Web Notify when garage open or closed.
+  hide_entity: false
+  trigger:
+    platform: state
+    entity_id: cover.garage_door
+  action:
+    service: notify.html5
+    data:
+      message: "Garage Door is {% if is_state('cover.garage_door', 'open') %}Open{% else %}Closed{% endif %}!"
