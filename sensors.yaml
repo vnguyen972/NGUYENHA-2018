@@ -52,22 +52,22 @@
       theater_room:
         value_template: '{{ states.remote.theater_room.attributes.current_activity }}'
         friendly_name: 'Theater Room'
-  - platform: plex
-    host: 192.168.1.101
+#  - platform: plex
+#    host: 192.168.1.101
   - platform: time_date
-    name: current_date
+    #name: current_date
     display_options:
       - 'date'
   - platform: mqtt
     name: "Theater Room Motion Sensor"
     state_topic: "smartthings/Theater Room Motion Sensor/motion"
-    payload_on: "active"
-    payload_off: "inactive"
+    payload_available: "active"
+    payload_not_available: "inactive"
   - platform: mqtt
     name: "HallwayDownStair Motion Sensor"
     state_topic: "smartthings/HallwayDownStair/motion"
-    payload_on: "active"
-    payload_off: "inactive"
+    payload_available: "active"
+    payload_not_available: "inactive"
   - platform: template
     sensors:
       # gogogate4dash:
@@ -133,5 +133,5 @@
       - apparent_temperature_min
       - precip_intensity_max
     units: auto
-    update_interval:
+    scan_interval:
       minutes: 15

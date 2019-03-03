@@ -1,28 +1,6 @@
 ########################################################
 #  AUTOMATION
 ########################################################
-- id: Lockitron Notification
-  alias: lockitron_notification
-  trigger:
-    - platform: time
-      minutes: '/5'
-      seconds: 00
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: '{{ (as_timestamp(now()) -  as_timestamp(states.sensor.front_door.last_updated)) > 300 }}'
-      - condition: state
-        entity_id: lock.lockitron
-        state: 'unlocked'
-      - condition: state
-        entity_id: sensor.front_door
-        state: 'closed'
-  action:
-    - service: tts.google_say
-      entity_id: media_player.kitchen_home
-      data:
-        message: "Front door is closed over 5 minutes but it's not locked. Please lock it now!"
 - id: Notification_Audio-Duyen_arrived_at_work
   alias: duyen_arrived_at_work
   trigger:

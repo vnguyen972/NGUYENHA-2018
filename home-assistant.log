@@ -1,0 +1,10 @@
+2018-12-16 16:24:58 WARNING (Recorder) [homeassistant.components.recorder] Ended unfinished session (id=41 from 2018-12-16 20:51:35.734323)
+2018-12-16 16:25:01 WARNING (Thread-16) [plexapi] BadRequest (401) unauthorized http://192.168.1.101:32400/; <html><head><script>window.location = window.location.href.match(/(^.+\/)[^\/]*$/)[1] + 'web/index.html';</script><title>Unauthorized</title></head><body><h1>401 Unauthorized</h1></body></html>
+2018-12-16 16:25:01 ERROR (Thread-16) [homeassistant.components.sensor.plex] (401) unauthorized; http://192.168.1.101:32400/ <html><head><script>window.location = window.location.href.match(/(^.+\/)[^\/]*$/)[1] + 'web/index.html';</script><title>Unauthorized</title></head><body><h1>401 Unauthorized</h1></body></html>
+2018-12-16 16:25:01 WARNING (Thread-8) [homeassistant.components.sensor.darksky] Monitored condition temperature_max is deprecated
+2018-12-16 16:25:01 WARNING (Thread-8) [homeassistant.components.sensor.darksky] Monitored condition temperature_min is deprecated
+2018-12-16 16:25:01 WARNING (Thread-8) [homeassistant.components.sensor.darksky] Monitored condition apparent_temperature_max is deprecated
+2018-12-16 16:25:01 WARNING (Thread-8) [homeassistant.components.sensor.darksky] Monitored condition apparent_temperature_min is deprecated
+2018-12-16 16:25:15 ERROR (Thread-3) [pychromecast.socket_client] Failed to connect, retrying in 5.0s
+2018-12-16 16:25:17 ERROR (Thread-21) [pychromecast.socket_client] Failed to connect, retrying in 5.0s
+2018-12-16 16:25:19 ERROR (Thread-19) [pychromecast.socket_client] Failed to connect, retrying in 5.0s

@@ -25,14 +25,15 @@ config:
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
 http:
   # Uncomment this to add a password (recommended!)
-  # api_password: PASSWORD
+  api_password: !secret api_password
   # Uncomment this if you are using SSL or running in Docker etc
-  # base_url: example.duckdns.org:8123
+  base_url: example.duckdns.org:8123
   base_url: nguyenha.duckdns.org
   ssl_certificate: /etc/letsencrypt/live/nguyenha.duckdns.org/fullchain.pem
   ssl_key: /etc/letsencrypt/live/nguyenha.duckdns.org/privkey.pem
   trusted_networks:
-    - 127.0.0.1
+    - 192.168.1.111
+    - 192.168.1.101
     - 192.168.1.1
 
 # Checks for available updates
@@ -45,7 +46,7 @@ updater:
   # include_used_components: true
 
 # Discover some devices automatically
-discovery:
+#discovery:
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
@@ -80,7 +81,7 @@ script: !include scripts.yaml
 
 duckdns:
   domain: nguyenha.duckdns.org
-  access_token: 12a002c8-e5ca-4603-adf5-b7ddd1cbf202
+  access_token: !secret duckdns_access_token
 
 mqtt:
   broker: localhost
@@ -113,7 +114,7 @@ light:
     brightness_state_topic: "smartthings/Theater Room Dimmer/level"
     brightness_command_topic: "smartthings/Theater Room Dimmer/level"
     brightness_scale: 99
-    brightness_template: "{{ value }}"
+    brightness_value_template: "{{ value }}"
     qos: 0
     payload_on: "on"
     payload_off: "off"
@@ -126,7 +127,7 @@ light:
     brightness_state_topic: "smartthings/Dinner Table Light/level"
     brightness_command_topic: "smartthings/Dinner Table Light/level"
     brightness_scale: 99
-    brightness_template: "{{ value }}"
+    brightness_value_template: "{{ value }}"
     qos: 0
     payload_on: "on"
     payload_off: "off"
@@ -162,9 +163,9 @@ light:
 ifttt:
   key: !secret ifttt_api_key
 notify:
-  - platform: telegram
-    name: Vu_Telegram
-    chat_id: 467266232
+#  - platform: telegram
+#    name: Vu_Telegram
+#    chat_id: 467266232
   - platform: html5
     name: html5
     gcm_api_key: !secret notify_html5_gcm_api_key
@@ -188,8 +189,8 @@ device_tracker:
   home_interval: 1
   consider_home: 180
   scan_options: " --privileged -sP "
-- platform: owntracks
-  max_gps_accuracy: 200
+#- platform: owntracks
+#  max_gps_accuracy: 200
 
 zone: !include zones.yaml
 
@@ -250,18 +251,18 @@ binary_sensor:
   - platform: workday
     name: Work Days
     country: US
-    state: TX
+    #state: TX
     workdays: [mon, tue, wed, thu, fri]
   - platform: workday
     name: Holidays
     country: US
-    state: TX
+    #state: TX
     workdays: [holiday]
     excludes: []
   - platform: workday
     name: Weekends
     country: US
-    state: TX
+    #state: TX
     workdays: [sat, sun]
     excludes: [mon, tue, wed, thu, fri, holiday]
 switch:
@@ -275,8 +276,11 @@ switch:
         turn_off:
           service: remote.turn_off
           entity_id: remote.theater_room
-telegram_bot:
-  - platform: polling
-    api_key: !secret telegram_api_key
-    allowed_chat_ids:
-      - 467266232
+#telegram_bot:
+#  - platform: polling
+#    api_key: !secret telegram_api_key
+#    allowed_chat_ids:
+#      - 467266232
+nest:
+  client_id: c16f885a-0d4f-4c58-a68e-c1b8cde2c1ef
+  client_secret: !secret nest_client_secret
